@@ -10,11 +10,12 @@ import com.example.heroapp.model.Hero
 @Dao
 interface HeroDao {
     @Query("SELECT * FROM hero_table ORDER BY id ASC")
+    // se si inserisce suspend sulle get con il Paging, va in errore di compilazione
     fun getAllHeroes(): PagingSource<Int, Hero>
 
     // questa funzione avrebbe potuto rerstituire un Flow, ma noi ora usiamo la paginazione
     @Query("SELECT * FROM hero_table WHERE id = :heroid")
-    fun getSelectedHero(heroid: Int): Hero
+    suspend fun getSelectedHero(heroid: Int): Hero
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addHero(heroes: List<Hero>)

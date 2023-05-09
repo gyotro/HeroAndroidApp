@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.heroapp.presentation.screens.splash.SplashScreen
 import com.example.heroapp.util.Constants.DETAILS_ARGUMENT_KEY
 
 // in questo file sarà presente il grafo di navigazione dell'App
@@ -18,7 +19,7 @@ fun SetupNavGraph(navController: NavHostController) {
         startDestination = Screen.Splash.route
     ) {
         composable(route = Screen.Splash.route) {
-
+            SplashScreen(navController = navController)
         }
         composable(route = Screen.Welcome.route) {
 
