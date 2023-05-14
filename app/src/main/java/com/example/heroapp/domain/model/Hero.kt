@@ -1,4 +1,4 @@
-package com.example.heroapp.model
+package com.example.heroapp.domain.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
