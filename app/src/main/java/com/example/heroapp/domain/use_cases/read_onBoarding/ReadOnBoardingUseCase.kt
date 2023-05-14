@@ -6,5 +6,6 @@ import kotlinx.coroutines.flow.Flow
 class ReadOnBoardingUseCase(
     private val repo: Repository
 ) {
+    // operator function vuol dire che richiamo l'operazione semplicemente richiamando la classe
     operator fun invoke(): Flow<Boolean> = repo.readOnBoardingState()
 }

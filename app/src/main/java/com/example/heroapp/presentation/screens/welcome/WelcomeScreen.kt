@@ -1,6 +1,5 @@
 package com.example.heroapp.presentation.screens.welcome
 
-import android.text.Layout
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
@@ -17,9 +16,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.heroapp.R
 import com.example.heroapp.domain.model.OnBoardingPage
+import com.example.heroapp.navigation.Screen
 import com.example.heroapp.ui.theme.*
 import com.example.heroapp.util.Constants.ON_BOARDING_PAGE_COUNT
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -30,7 +31,10 @@ import com.google.accompanist.pager.PagerState as PagerState
 
 @OptIn(ExperimentalPagerApi::class, ExperimentalFoundationApi::class)
 @Composable
-fun WelcomeScreen(navController: NavHostController) {
+fun WelcomeScreen(
+    navController: NavHostController,
+    welcomeViewModel: WelcomeViewModel = hiltViewModel()
+) {
     val pages = listOf(OnBoardingPage.First, OnBoardingPage.Second, OnBoardingPage.Third)
 
     val pagerState = rememberPagerState(0) // 0 means initial page
@@ -61,7 +65,11 @@ fun WelcomeScreen(navController: NavHostController) {
             indicatorWidth = PAGING_INDICATOR_WIDTH,
             spacing = PAGING_INDICATOR_SPACING
         )
-        FinishButton( pagerState, Modifier.weight(1f) ) {}
+        FinishButton( pagerState, Modifier.weight(1f) ) {
+            welcomeViewModel.saveOnBoardingState(completed = true)
+            navController.popBackStack()
+            navController.navigate(Screen.Home.route)
+        }
     }
 }
 @Composable

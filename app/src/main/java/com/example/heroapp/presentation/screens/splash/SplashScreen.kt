@@ -18,13 +18,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.example.heroapp.R
+import com.example.heroapp.navigation.Screen
 import com.example.heroapp.ui.theme.Purple500
 import com.example.heroapp.ui.theme.Purple700
 
 @Composable
-fun SplashScreen(navController: NavHostController) {
+fun SplashScreen(navController: NavHostController, splashViewModel: SplashViewModel = hiltViewModel()) {
     // let's animate the Logo
     val degree = remember {
         Animatable(initialValue = 0f)
@@ -42,6 +44,15 @@ fun SplashScreen(navController: NavHostController) {
                 delayMillis = 200
             )
         )
+        // si legge il valore dell'onBoarding: se false si va alla welcome screen, altrimenti Home screen
+        val onBoarding: Boolean = splashViewModel.onBoardingCompletedState.value
+        if (onBoarding) {
+            navController.popBackStack()
+            navController.navigate(Screen.Home.route)
+        }else {
+            navController.popBackStack()
+            navController.navigate(Screen.Welcome.route)
+        }
     }
 }
 @Composable
