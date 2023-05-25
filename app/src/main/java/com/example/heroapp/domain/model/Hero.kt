@@ -3,7 +3,9 @@ package com.example.heroapp.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.example.heroapp.util.Constants.HERO_DB
+import kotlinx.serialization.Serializable
 
+@Serializable
 @Entity(tableName = HERO_DB)
 data class Hero(
     @PrimaryKey(autoGenerate = false) // noi già abbiamo l'Id

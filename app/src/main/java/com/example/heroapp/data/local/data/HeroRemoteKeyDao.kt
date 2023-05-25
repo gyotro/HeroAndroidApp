@@ -1,4 +1,4 @@
-package com.example.heroapp.data.local.dao
+package com.example.heroapp.data.local.data
 
 import androidx.room.Dao
 import androidx.room.Insert

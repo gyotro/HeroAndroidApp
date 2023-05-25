@@ -9,4 +9,6 @@ object Constants {
     const val ON_BOARDING_PAGE_COUNT = 3
     const val DATA_STORE_NAME = "hero_preferences"
     const val DATA_STORE_KEY = "onBoardingComplete"
+    // for Android localhost, 10.0.2.2 has to be used
+    const val BASE_URL = "http://10.0.2.2:8080"
 }

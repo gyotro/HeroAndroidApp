@@ -8,7 +8,7 @@ import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import com.example.heroapp.data.local.dao.*
+import com.example.heroapp.data.local.data.*
 import dagger.Provides
 import javax.inject.Singleton
 

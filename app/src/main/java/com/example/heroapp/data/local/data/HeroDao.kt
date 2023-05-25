@@ -1,4 +1,4 @@
-package com.example.heroapp.data.local.dao
+package com.example.heroapp.data.local.data
 
 import androidx.paging.PagingSource
 import androidx.room.Dao
