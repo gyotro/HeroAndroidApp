@@ -18,7 +18,7 @@ import javax.inject.Singleton
 // Class responsible for Retrofit and OkHttp initialization
 @Module
 @InstallIn(SingletonComponent::class)
-// Create OkHttpClient
+// Creating OkHttpClient object
 object NetworkModule {
     @Provides
     @Singleton
@@ -27,7 +27,7 @@ object NetworkModule {
         .connectTimeout(15, TimeUnit.SECONDS)
         .build()
 
-    // Create Retrofit Client
+    // Creating Retrofit Client
     @Provides
     @Singleton
     fun provideRetrofit(okHttpClient: OkHttpClient) : Retrofit {
@@ -41,7 +41,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    // an instance of HeroApi interface has to be created
+    // providing an instance of HeroApi interface
     fun provideHeroApi(retrofit: Retrofit): HeroApi = retrofit.create(HeroApi::class.java)
 
 }
