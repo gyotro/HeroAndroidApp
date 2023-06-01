@@ -14,8 +14,8 @@ interface HeroDao {
     fun getAllHeroes(): PagingSource<Int, Hero>
 
     // questa funzione avrebbe potuto rerstituire un Flow, ma noi ora usiamo la paginazione
-    @Query("SELECT * FROM hero_table WHERE id = :heroid")
-    suspend fun getSelectedHero(heroid: Int): Hero
+    @Query("SELECT * FROM hero_table WHERE id = :heroId")
+    suspend fun getSelectedHero(heroId: Int): Hero
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addHero(heroes: List<Hero>)
