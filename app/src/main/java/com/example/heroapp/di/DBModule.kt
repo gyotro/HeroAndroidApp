@@ -21,7 +21,7 @@ object DBModule {
     @Singleton
     fun provideDatabase(
         @ApplicationContext context: Context,
-        ): RoomDatabase = Room.databaseBuilder(
+        ): HeroDatabase = Room.databaseBuilder(
         context = context,
         klass = HeroDatabase::class.java,
         name = HERO_DB_DEP_INJ)

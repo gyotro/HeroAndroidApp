@@ -5,6 +5,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 
@@ -12,8 +13,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun HomeScreen(navController: NavHostController,
-      //         homeViewModel: HomeViewModel = hiltViewModel()
+               homeViewModel: HomeScreenViewModel = hiltViewModel()
 ) {
+    val allHeroes = homeViewModel.allHeroes.collectAsLazyPagingItems()
     Scaffold(
         topBar = { HomeTopBar({ }) }, content =  {}
     )
