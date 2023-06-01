@@ -1,6 +1,9 @@
 package com.example.heroapp.di
 
+import com.example.heroapp.data.local.data.HeroDatabase
 import com.example.heroapp.data.remote.HeroApi
+import com.example.heroapp.data.repository.RemoteDataSourceImpl
+import com.example.heroapp.domain.repository.RemoteDataSource
 import com.example.heroapp.util.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
 import dagger.Module
@@ -43,5 +46,20 @@ object NetworkModule {
     @Singleton
     // providing an instance of HeroApi interface
     fun provideHeroApi(retrofit: Retrofit): HeroApi = retrofit.create(HeroApi::class.java)
+
+    // inseiriamo anche la DI per il RemoteDataSource
+    @Provides
+    @Singleton
+    // providing an instance of HeroApi interface
+    fun provideRemoteDataSourceImpl(
+        heroApi: HeroApi,
+        heroDatabase: HeroDatabase
+    ): RemoteDataSource // andrebbe anche bene ritornare RemoteDataSourceImpl
+    {
+        return RemoteDataSourceImpl(
+            heroApi = heroApi,
+            heroDatabase = heroDatabase
+        )
+    }
 
 }

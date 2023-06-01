@@ -11,4 +11,5 @@ object Constants {
     const val DATA_STORE_KEY = "onBoardingComplete"
     // for Android localhost, 10.0.2.2 has to be used
     const val BASE_URL = "http://10.0.2.2:8080"
+    const val ITEM_PER_PAGE = 3
 }
