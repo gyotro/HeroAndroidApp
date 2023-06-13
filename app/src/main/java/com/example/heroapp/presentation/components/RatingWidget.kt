@@ -43,7 +43,7 @@ fun RatingWidget(
     }
     val result = calculateRating(rating = rating)
     Column {
-        Spacer(Modifier.padding(30.dp))
+  //      Spacer(Modifier.padding(30.dp))
         Row(
             modifier = modifier,
             horizontalArrangement = Arrangement.spacedBy(spaceBetween)
