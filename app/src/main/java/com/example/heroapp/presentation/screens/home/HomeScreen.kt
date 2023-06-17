@@ -17,12 +17,12 @@ fun HomeScreen(navController: NavHostController,
     val allHeroes = homeViewModel.allHeroes.collectAsLazyPagingItems()
 
     Scaffold(
-        topBar = { HomeTopBar({}) },
+        topBar = { HomeTopBar {} },
         content =
      {
            ListContent(
-               heroes = allHeroes, navHostController = navController
-
+               heroes = allHeroes,
+               navHostController = navController
            )
 
     })

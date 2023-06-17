@@ -1,7 +1,9 @@
 package com.example.heroapp.presentation.common
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ContentAlpha
@@ -25,6 +27,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
 import androidx.paging.compose.LazyPagingItems
+import androidx.paging.compose.items
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.example.heroapp.R
@@ -36,23 +39,43 @@ import com.example.heroapp.ui.theme.MEDIUM_PADDING
 import com.example.heroapp.ui.theme.SMALL_PADDING
 import com.example.heroapp.ui.theme.TopAppBarBackgroundColor
 import com.example.heroapp.util.Constants.BASE_URL
+import kotlin.math.log
 
 
 @Composable
-fun ListContent(heroes: LazyPagingItems<Hero>,
-                navHostController: NavHostController) {
+fun ListContent(
+    heroes: LazyPagingItems<Hero>,
+    navHostController: NavHostController
+) {
+    Log.d("ListContent", heroes.loadState.toString())
+    LazyColumn(
+        // padding prima e dopo la Lazy Column
+        contentPadding = PaddingValues(SMALL_PADDING),
+        // padding fra gli elementi
+        verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
+    ) {
+        // versione con il LazyPagingItems
+        items(
+            items = heroes,
+            key = { item: Hero -> item.id }
+        ) { item ->
+            item?.let { hero ->
+                HeroItem(hero, navHostController)
+            }
 
-
+        }
+    }
 }
+
 
 @Composable
 fun HeroItem(
     hero: Hero,
     navHostController: NavHostController
-){
+) {
     val url = "$BASE_URL${hero.image}"
-    Box(modifier = Modifier.
-        clickable {
+    Box(
+        modifier = Modifier.clickable {
             navHostController.navigate(Screen.Details.passHeroId(heroId = hero.id))
         }.height(HERO_ITEM_HIGHT),
         // verificare come si usa il content Alignment sul Box
@@ -65,7 +88,7 @@ fun HeroItem(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data("https://example.com/image.jpg")
                     .crossfade(true)
-      //              .size(Size.ORIGINAL)
+                    //              .size(Size.ORIGINAL)
                     .build(),
                 placeholder = painterResource(R.drawable.image_fill0_wght300_grad200_opsz48_white),
                 error = painterResource(R.drawable.image_fill0_wght300_grad200_opsz48_white),
@@ -83,7 +106,7 @@ fun HeroItem(
             )
         ) {
             Column(
-                modifier = Modifier.fillMaxSize().padding(all=MEDIUM_PADDING)
+                modifier = Modifier.fillMaxSize().padding(all = MEDIUM_PADDING)
             ) {
                 Text(
                     text = hero.name,
@@ -122,7 +145,8 @@ fun HeroItem(
 @Composable
 @Preview(showBackground = true)
 fun previewHeroItem() {
-    HeroItem(hero = Hero(
+    HeroItem(
+        hero = Hero(
             id = 2,
             name = "GokuSSJ",
             image = "",
@@ -134,6 +158,7 @@ fun previewHeroItem() {
             family = emptyList(),
             abilities = emptyList(),
             natureTypes = emptyList()
-        ), navHostController = rememberNavController())
+        ), navHostController = rememberNavController()
+    )
 }
 
