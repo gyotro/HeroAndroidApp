@@ -11,7 +11,7 @@ import com.example.heroapp.domain.model.Hero
 import com.example.heroapp.domain.repository.RemoteDataSource
 import com.example.heroapp.util.Constants.ITEM_PER_PAGE
 import kotlinx.coroutines.flow.Flow
-@OptIn(ExperimentalPagingApi::class)
+@ExperimentalPagingApi
 class RemoteDataSourceImpl(
     private val heroApi: HeroApi,
     private val heroDatabase: HeroDatabase

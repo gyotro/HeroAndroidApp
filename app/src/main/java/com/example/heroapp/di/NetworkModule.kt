@@ -1,11 +1,13 @@
 package com.example.heroapp.di
 
+import androidx.paging.ExperimentalPagingApi
 import com.example.heroapp.data.local.data.HeroDatabase
 import com.example.heroapp.data.remote.HeroApi
 import com.example.heroapp.data.repository.RemoteDataSourceImpl
 import com.example.heroapp.domain.repository.RemoteDataSource
 import com.example.heroapp.util.Constants.BASE_URL
 import com.jakewharton.retrofit2.converter.kotlinx.serialization.asConverterFactory
+import dagger.Component.Factory
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -20,8 +22,9 @@ import javax.inject.Singleton
 
 // Class responsible for Retrofit and OkHttp initialization
 @Module
+@ExperimentalPagingApi
+@ExperimentalSerializationApi
 @InstallIn(SingletonComponent::class)
-@OptIn(ExperimentalSerializationApi::class)
 // Creating OkHttpClient object
 object NetworkModule {
     private val json: Json = Json { ignoreUnknownKeys = true
@@ -52,6 +55,7 @@ object NetworkModule {
     fun provideHeroApi(retrofit: Retrofit): HeroApi = retrofit.create(HeroApi::class.java)
 
     // inseiriamo anche la DI per il RemoteDataSource
+
     @Provides
     @Singleton
     // providing an instance of HeroApi interface
