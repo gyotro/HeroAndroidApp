@@ -10,7 +10,9 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonConfiguration
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.OkHttpClient
 import retrofit2.Retrofit
@@ -21,8 +23,12 @@ import javax.inject.Singleton
 // Class responsible for Retrofit and OkHttp initialization
 @Module
 @InstallIn(SingletonComponent::class)
+@OptIn(ExperimentalSerializationApi::class)
 // Creating OkHttpClient object
 object NetworkModule {
+    private val json: Json = Json { ignoreUnknownKeys = true
+                                    prettyPrint = true }
+
     @Provides
     @Singleton
     fun provideOkHttp() : OkHttpClient = OkHttpClient.Builder()
@@ -38,7 +44,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .baseUrl(BASE_URL)
             .client(okHttpClient)
-            .addConverterFactory(Json.asConverterFactory(contentType))
+            .addConverterFactory(json.asConverterFactory(contentType))
         .build()
     }
 
