@@ -86,7 +86,7 @@ fun HeroItem(
             // va visualizzata l'immagine dell'hero
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data("https://example.com/image.jpg")
+                    .data("$url${hero.image}")
                     .crossfade(true)
                     //              .size(Size.ORIGINAL)
                     .build(),
