@@ -21,14 +21,16 @@ class RemoteDataSourceImpl(
     override fun getAllHero(): Flow<PagingData<Hero>> {
         // richiamiamo la nostra getAllHeroes che restituisce una paging result
         // questa sarà la nostra single source of truth
-        val pagingSourceFactory = heroDao.getAllHeroes()
+        // pagingSourcefactory (che restituisce la paging Source) deve essere una lambda, altrimenti
+        // avremo un errore di istanze nella creazione della classe PagingSource
+        val pagingSourceFactory = { heroDao.getAllHeroes() }
         return Pager(
             config = PagingConfig(pageSize = ITEM_PER_PAGE),
             remoteMediator = HeroRemoteMediator(
                 heroApi = heroApi,
                 heroDatabase = heroDatabase
             ),
-            pagingSourceFactory = { pagingSourceFactory }
+            pagingSourceFactory =  pagingSourceFactory
         ).flow
     }
 
