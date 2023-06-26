@@ -26,6 +26,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.rememberNavController
+import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.items
 import coil.compose.AsyncImage
@@ -34,6 +35,7 @@ import com.example.heroapp.R
 import com.example.heroapp.domain.model.Hero
 import com.example.heroapp.navigation.Screen
 import com.example.heroapp.presentation.components.RatingWidget
+import com.example.heroapp.presentation.components.ShimmerEffect
 import com.example.heroapp.ui.theme.HERO_ITEM_HIGHT
 import com.example.heroapp.ui.theme.MEDIUM_PADDING
 import com.example.heroapp.ui.theme.SMALL_PADDING
@@ -48,22 +50,54 @@ fun ListContent(
     navHostController: NavHostController
 ) {
     Log.d("ListContent", heroes.loadState.toString())
-    LazyColumn(
-        // padding prima e dopo la Lazy Column
-        contentPadding = PaddingValues(SMALL_PADDING),
-        // padding fra gli elementi
-        verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
-    ) {
-        // versione con il LazyPagingItems
-        items(
-            items = heroes,
-            key = { item: Hero -> item.id }
-        ) { item ->
-            item?.let { hero ->
-                HeroItem(hero, navHostController)
+
+    if(handleConnectionResult(heroes)) {
+        LazyColumn(
+            // padding prima e dopo la Lazy Column
+            contentPadding = PaddingValues(SMALL_PADDING),
+            // padding fra gli elementi
+            verticalArrangement = Arrangement.spacedBy(SMALL_PADDING)
+        ) {
+            // versione con il LazyPagingItems
+            items(
+                items = heroes,
+                key = { item: Hero -> item.id }
+            ) { item ->
+                item?.let { hero ->
+                    HeroItem(hero, navHostController)
+                }
+
             }
+        }
+    }
+}
+
+@Composable
+// return false if data is loading
+fun handleConnectionResult(
+    heroes: LazyPagingItems<Hero>
+): Boolean {
+    heroes.apply {
+        // check if there is an error
+        val error = when {
+            this.loadState.refresh is LoadState.Error -> this.loadState.refresh as LoadState.Error
+            this.loadState.prepend is LoadState.Error -> this.loadState.prepend as LoadState.Error
+            this.loadState.append is LoadState.Error -> this.loadState.append as LoadState.Error
+            else -> null
+        }
+
+        return when {
+            // if Loading, call ShimmerEffect and return false
+            loadState.refresh is LoadState.Loading -> {
+                ShimmerEffect()
+                false
+            }
+            // if error, return false
+            error != null -> false
+            else -> true
 
         }
+
     }
 }
 

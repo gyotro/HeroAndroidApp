@@ -123,7 +123,7 @@ fun calculateRating(rating: Double): Map<String, Int> {
         if(fullStar in 0..5 && halfStar in (0..9))
         {
             fullRatingStar = fullStar
-            if (halfStar in 0..5)
+            if (halfStar in 1..5)
                 halfRatingStar++
             if (fullStar == 5 && halfStar > 0)
             {
