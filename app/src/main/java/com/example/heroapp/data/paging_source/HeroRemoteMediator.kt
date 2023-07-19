@@ -26,7 +26,8 @@ class HeroRemoteMediator @Inject constructor(
         val currentTime = System.currentTimeMillis()
         val lastUpdated = heroRemoteKeysDao.getRemoteKeys(heroId = 1)?.lastUpdated ?: 0L
         val cacheTimeout = 1440
-
+        // questo calcolo è per stabilire quando si cercano i dati dal DB (quindi dai dati in cache) e quando tramite chiamata all'API:
+        // se la differenza tra il current time in millis e il last updated è inferiore al cache timeout non si faranno chiamate all API e si prenderanno i dati dalla cache
         val diffInMinutes = (currentTime - lastUpdated) / 1000 / 60
         return if (diffInMinutes.toInt() <= cacheTimeout) {
             InitializeAction.SKIP_INITIAL_REFRESH
