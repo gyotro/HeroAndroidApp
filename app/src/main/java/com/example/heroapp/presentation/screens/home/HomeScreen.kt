@@ -6,6 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.heroapp.navigation.Screen
 import com.example.heroapp.presentation.common.ListContent
 
 
@@ -17,7 +18,9 @@ fun HomeScreen(navController: NavHostController,
     val allHeroes = homeViewModel.allHeroes.collectAsLazyPagingItems()
 
     Scaffold(
-        topBar = { HomeTopBar {} },
+        topBar = { HomeTopBar(
+            onSearchAction = { navController.navigate(Screen.Search.route) }
+        ) },
         content =
      {
            ListContent(
