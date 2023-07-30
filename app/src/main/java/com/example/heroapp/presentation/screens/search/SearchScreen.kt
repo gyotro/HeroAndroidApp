@@ -30,6 +30,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import androidx.paging.compose.collectAsLazyPagingItems
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -38,12 +39,14 @@ fun SearchScreen(
     navHostController: NavHostController,
     searchScreenViewModel: SearchScreenViewModel = hiltViewModel()
 ) {
-    val searchQuery by searchScreenViewModel.searchQuery
+    val searchQuery = searchScreenViewModel.searchQuery
+    // questo sarà il content del nostro Scaffold
+    val heroes = searchScreenViewModel.searchedHeroes.collectAsLazyPagingItems()
     Scaffold(
         topBar = { SearchTopBar (
             text = searchQuery,
             onTextChange = { searchScreenViewModel.updateSearchValue(it) },
-            onSearchClicked = {},
+            onSearchClicked = { searchScreenViewModel.searchHero(query = it) },
             onCloseClicked = {
                 // si elimina lo screen attuale (il search) e si ritorna quello precedente (home)
                 navHostController.popBackStack()

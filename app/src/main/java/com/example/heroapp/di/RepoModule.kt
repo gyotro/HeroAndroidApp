@@ -8,6 +8,7 @@ import com.example.heroapp.domain.use_cases.UseCases
 import com.example.heroapp.domain.use_cases.read_AllHeroes.GetAllHeroesUseCase
 import com.example.heroapp.domain.use_cases.read_onBoarding.ReadOnBoardingUseCase
 import com.example.heroapp.domain.use_cases.save_onBoarding.SaveOnBoardingUseCase
+import com.example.heroapp.domain.use_cases.search_heroes.SearchHeroesUseCase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -31,7 +32,8 @@ object RepoModule {
         return UseCases(
             saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository),
-            getAllHeroesUseCase = GetAllHeroesUseCase(repository)
+            getAllHeroesUseCase = GetAllHeroesUseCase(repository),
+            searchHeroesUseCase = SearchHeroesUseCase(repository)
         )
     }
 

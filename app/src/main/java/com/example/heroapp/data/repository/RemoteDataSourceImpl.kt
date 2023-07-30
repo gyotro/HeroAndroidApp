@@ -6,6 +6,7 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import com.example.heroapp.data.local.data.HeroDatabase
 import com.example.heroapp.data.paging_source.HeroRemoteMediator
+import com.example.heroapp.data.paging_source.SearchHeroesSource
 import com.example.heroapp.data.remote.HeroApi
 import com.example.heroapp.domain.model.Hero
 import com.example.heroapp.domain.repository.RemoteDataSource
@@ -15,7 +16,8 @@ import kotlinx.coroutines.flow.Flow
 class RemoteDataSourceImpl(
     private val heroApi: HeroApi,
     private val heroDatabase: HeroDatabase
-): RemoteDataSource {
+): RemoteDataSource
+{
     private val heroDao = heroDatabase.heroDao()
 
     override fun getAllHero(): Flow<PagingData<Hero>> {
@@ -34,7 +36,12 @@ class RemoteDataSourceImpl(
         ).flow
     }
 
-    override fun getSearchHero(): Flow<PagingData<Hero>> {
-        TODO()
-    }
+    override fun getSearchHero(query: String): Flow<PagingData<Hero>> = Pager(
+        config = PagingConfig(pageSize = ITEM_PER_PAGE),
+        //ricordarsi che vuole una lambda
+        pagingSourceFactory =   { SearchHeroesSource(
+            heroApi = heroApi,
+            query = query
+        ) }
+    ).flow
 }
