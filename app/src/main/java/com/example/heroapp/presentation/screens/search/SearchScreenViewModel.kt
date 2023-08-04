@@ -32,6 +32,7 @@ class SearchScreenViewModel @Inject constructor(
         _searchQuery = search
     }
 
+    // si usa cachedIn per evitare che una volta ruotato il telefono si debba rieffettuare una chiamata (come remember)
     fun searchHero(
         query: String
     ) = viewModelScope.launch(Dispatchers.IO) {
