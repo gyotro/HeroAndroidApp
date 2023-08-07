@@ -94,7 +94,7 @@ fun handleConnectionResult(
             // if error, return false
             error != null ->
             {
-                EmptyScreen(error = error)
+                EmptyScreen(error = error, heroes = heroes)
                 false
             }
             heroes.itemCount < 1 ->
