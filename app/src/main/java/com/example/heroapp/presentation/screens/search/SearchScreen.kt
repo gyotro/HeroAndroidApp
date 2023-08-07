@@ -31,6 +31,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import androidx.paging.compose.collectAsLazyPagingItems
+import com.example.heroapp.presentation.common.ListContent
 import dagger.hilt.android.lifecycle.HiltViewModel
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -52,7 +53,10 @@ fun SearchScreen(
                 navHostController.popBackStack()
             }
         ) }
-    ){ }
+    ){
+        // Displaying Searched Heroes (same Composable as Displaying the list of all heroes)
+        ListContent(heroes = heroes, navHostController = navHostController)
+    }
 }
 
 @Composable
@@ -79,7 +83,9 @@ fun SearchWidget(
     onCloseClicked: () -> Unit
 ) {
     Surface(
-        modifier = Modifier.fillMaxWidth().height(56.dp),
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(56.dp),
         tonalElevation = AppBarDefaults.TopAppBarElevation,
         //color = MaterialTheme.colors.TopAppBarBackgroundColor
         color = MaterialTheme.colorScheme.primary

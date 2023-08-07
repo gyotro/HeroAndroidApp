@@ -1,7 +1,5 @@
 package com.example.heroapp.presentation.common
 
-import android.text.Layout.Alignment
-import android.view.animation.AlphaAnimation
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -12,7 +10,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
-import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
@@ -20,25 +17,27 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
-import coil.compose.AsyncImagePainter
 import com.example.heroapp.R
 import com.example.heroapp.ui.theme.CONNECTION_ERROR
 import com.example.heroapp.ui.theme.SMALL_PADDING
-import java.net.SocketException
 import java.net.SocketTimeoutException
 
 // verrà richiamata quando ci sarà errore di connessione
 @Composable
-fun EmptyScreen(error: LoadState.Error) {
-    val message by remember {
-        mutableStateOf(parseErrorMessage(error.toString()))
+fun EmptyScreen(error: LoadState.Error? = null) {
+    // di default inseriamo ricerca hero
+    var message by remember {
+        mutableStateOf("Find your favourite Hero!!")
     }
-    val icon by remember {
-        mutableStateOf(R.drawable.ic_network_error)
+    var icon by remember {
+        mutableStateOf(R.drawable.search_hero)
     }
-
+    // se l'errore non è null, valorizziamo tutto con i dati dell'errore
+    if (error?.error?.message != null) {
+        message = parseErrorMessage(error.error.message!!)
+        icon = R.drawable.ic_network_error
+    }
     var starAnimation by remember { mutableStateOf(false) }
     // perché non si usa remember?
     val alphaAnimation by animateFloatAsState(

@@ -41,7 +41,6 @@ import com.example.heroapp.ui.theme.MEDIUM_PADDING
 import com.example.heroapp.ui.theme.SMALL_PADDING
 import com.example.heroapp.ui.theme.TopAppBarBackgroundColor
 import com.example.heroapp.util.Constants.BASE_URL
-import kotlin.math.log
 
 
 @Composable
@@ -96,6 +95,11 @@ fun handleConnectionResult(
             error != null ->
             {
                 EmptyScreen(error = error)
+                false
+            }
+            heroes.itemCount < 1 ->
+            {
+                EmptyScreen()
                 false
             }
             else -> true
