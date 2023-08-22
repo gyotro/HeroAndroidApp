@@ -5,6 +5,7 @@ import com.example.heroapp.data.repository.DataStoreOperationsImpl
 import com.example.heroapp.data.repository.Repository
 import com.example.heroapp.domain.repository.DataStoreOperations
 import com.example.heroapp.domain.use_cases.UseCases
+import com.example.heroapp.domain.use_cases.get_selected_hero.GetSelectedHeroUseCase
 import com.example.heroapp.domain.use_cases.read_AllHeroes.GetAllHeroesUseCase
 import com.example.heroapp.domain.use_cases.read_onBoarding.ReadOnBoardingUseCase
 import com.example.heroapp.domain.use_cases.save_onBoarding.SaveOnBoardingUseCase
@@ -33,7 +34,8 @@ object RepoModule {
             saveOnBoardingUseCase = SaveOnBoardingUseCase(repository),
             readOnBoardingUseCase = ReadOnBoardingUseCase(repository),
             getAllHeroesUseCase = GetAllHeroesUseCase(repository),
-            searchHeroesUseCase = SearchHeroesUseCase(repository)
+            searchHeroesUseCase = SearchHeroesUseCase(repository),
+            getSelectedHeroUseCase = GetSelectedHeroUseCase(repository)
         )
     }
 

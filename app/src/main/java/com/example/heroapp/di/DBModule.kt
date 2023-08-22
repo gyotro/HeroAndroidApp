@@ -10,6 +10,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import com.example.heroapp.data.local.data.*
+import com.example.heroapp.data.repository.LocalDataSourceImpl
+import com.example.heroapp.domain.repository.LocalDataSource
 import dagger.Provides
 import javax.inject.Singleton
 
@@ -26,4 +28,13 @@ object DBModule {
         klass = HeroDatabase::class.java,
         name = HERO_DB_DEP_INJ)
             .build()
+
+    @Provides
+    @Singleton
+    fun provideLocalDB(
+        heroDatabase: HeroDatabase
+    ): LocalDataSource {
+        return LocalDataSourceImpl(heroDatabase)
+    }
+
 }
