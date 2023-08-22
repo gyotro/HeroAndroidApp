@@ -7,6 +7,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.example.heroapp.presentation.details.DetailsScreen
 import com.example.heroapp.presentation.screens.home.HomeScreen
 import com.example.heroapp.presentation.screens.search.SearchScreen
 import com.example.heroapp.presentation.screens.splash.SplashScreen
@@ -38,7 +39,9 @@ fun SetupNavGraph(navController: NavHostController) {
                 type = NavType.IntType
             })
         ) )
-        {}
+        {
+            DetailsScreen(navController = navController)
+        }
         composable(route = Screen.Search.route) {
             SearchScreen(navController)
         }
