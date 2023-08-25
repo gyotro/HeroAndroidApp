@@ -28,16 +28,16 @@ fun OrderedList(
         Text(
             text = title,
             color = textColor,
-            fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+            fontSize = MaterialTheme.typography.labelLarge.fontSize,
             fontWeight = FontWeight.Bold
         )
-        Spacer(modifier = Modifier.padding(10.dp))
+        Spacer(modifier = Modifier.padding(3.dp))
         items.forEachIndexed { index, item ->
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
                 text = "${index + 1}. $item",
                 color = textColor,
-                fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                fontSize = MaterialTheme.typography.labelLarge.fontSize,
                 fontWeight = FontWeight.Light
             )
         }

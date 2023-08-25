@@ -17,11 +17,8 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.heroapp.R
@@ -50,14 +47,14 @@ fun InfoBox(
             Text(
                 text = bigText,
                 color = textColor,
-                fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                fontSize = MaterialTheme.typography.labelLarge.fontSize,
                 fontWeight = FontWeight.Bold
             )
             Text(
                 modifier = Modifier.alpha(ContentAlpha.medium),
                 text = smallText,
                 color = textColor,
-                fontSize = MaterialTheme.typography.headlineSmall.fontSize,
+                fontSize = MaterialTheme.typography.labelLarge.fontSize,
                 fontWeight = FontWeight.Light
             )
         }
