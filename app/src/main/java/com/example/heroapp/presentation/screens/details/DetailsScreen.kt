@@ -1,5 +1,6 @@
 package com.example.heroapp.presentation.screens.details
 
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ContentAlpha
@@ -11,17 +12,22 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
+import coil.compose.rememberAsyncImagePainter
 import com.example.heroapp.domain.model.Hero
 import com.example.heroapp.presentation.components.InfoBox
 import com.example.heroapp.presentation.components.OrderedList
 import com.example.heroapp.ui.theme.LARGE_PADDING
 import com.example.heroapp.ui.theme.titleColor
+import com.example.heroapp.util.Constants.BASE_URL
 import com.example.heroapp.R as R
 
 @Composable
@@ -156,6 +162,25 @@ fun BottomSheetContent(
                 textColor = contentColor
             )
         }
+    }
+}
+
+@Composable
+fun BackgroundContent(
+    heroImage: String,
+    imageFraction: Float,
+    backgroundColor: Color = MaterialTheme.colorScheme.surface,
+    onCloseAction: () -> Unit
+) {
+    val imageUrl = "$BASE_URL$heroImage"
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .background(backgroundColor)) {
+        AsyncImage(
+            model = imageUrl,
+            contentDescription = "Image",
+            contentScale = ContentScale.Crop,
+        )
     }
 }
 

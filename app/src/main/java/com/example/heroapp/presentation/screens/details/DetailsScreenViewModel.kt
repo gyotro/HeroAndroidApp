@@ -25,13 +25,15 @@ class DetailsScreenViewModel @Inject constructor(
     // serve per prendere il valore di HeroID (approfondire)
     savedStateHandle: SavedStateHandle
 ): ViewModel() {
-    // se avessimo usato il by, non avremmo usato lo State, ma avremmo direttamente il valore
+
+    // è necessario usare il MutableStateFlow perché nella coroutine per prendere i valori si sta usando il Dispatchers.IO. si usa Dispatchers.IO e non Dispatchers.Main perché dobbiamo leggere dal DB
     private val _heroDetail = MutableStateFlow<Hero?>(null)
     val heroDetail: StateFlow<Hero?> = _heroDetail
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
             val heroId = savedStateHandle.get<Int>(Constants.DETAILS_ARGUMENT_KEY)
+            // se avessimo usato il by, non avremmo usato lo State, ma avremmo direttamente il valore
             _heroDetail.value = heroId?.let { useCase.getSelectedHeroUseCase(it) }
             // Logging Hero Name
             _heroDetail.value?.name.let {
