@@ -4,6 +4,8 @@ package com.example.heroapp.presentation.screens.details
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,6 +28,7 @@ import com.example.heroapp.domain.model.Hero
 import com.example.heroapp.presentation.components.InfoBox
 import com.example.heroapp.presentation.components.OrderedList
 import com.example.heroapp.ui.theme.LARGE_PADDING
+import com.example.heroapp.ui.theme.SMALL_PADDING
 import com.example.heroapp.ui.theme.titleColor
 import com.example.heroapp.util.Constants.BASE_URL
 import com.example.heroapp.R as R
@@ -63,7 +66,16 @@ fun DetailsScreenContent(
         sheetContent = {
             hero?.let { BottomSheetContent(selectedHero = it) }
         },
-        content = {}
+        content = {
+            hero?.image?.let { hero ->
+                BackgroundContent(
+                    heroImage = hero,
+ //                   imageFraction = ,
+                    onCloseAction = { navController.popBackStack() }
+
+                )
+            }
+        }
     )
 }
 
@@ -168,7 +180,7 @@ fun BottomSheetContent(
 @Composable
 fun BackgroundContent(
     heroImage: String,
-    imageFraction: Float,
+    imageFraction: Float = 1f,
     backgroundColor: Color = MaterialTheme.colorScheme.surface,
     onCloseAction: () -> Unit
 ) {
@@ -178,9 +190,27 @@ fun BackgroundContent(
         .background(backgroundColor)) {
         AsyncImage(
             model = imageUrl,
-            contentDescription = "Image",
+            contentDescription = "Hero_Image",
             contentScale = ContentScale.Crop,
+            onLoading = { CircularProgressIndicator(
+                color = Color.Blue,
+                strokeWidth = 6.dp
+            ) },
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(fraction = imageFraction).align(Alignment.TopStart)
         )
+        IconButton(
+            onClick = { onCloseAction },
+            modifier = Modifier.fillMaxWidth().padding(SMALL_PADDING)
+        ){
+            Icon(
+                imageVector = Icons.Default.Close,
+                contentDescription = "CloseIcon",
+                tint = Color.White,
+                modifier = Modifier.size(32.dp)
+            )
+
+
+        }
     }
 }
 
