@@ -1,15 +1,21 @@
 package com.example.heroapp.presentation.screens.details
 
 
+import android.annotation.SuppressLint
+import android.util.Log
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.BottomSheetValue
 import androidx.compose.material.ContentAlpha
+import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.material3.BottomSheetScaffold
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -27,9 +33,7 @@ import coil.compose.rememberAsyncImagePainter
 import com.example.heroapp.domain.model.Hero
 import com.example.heroapp.presentation.components.InfoBox
 import com.example.heroapp.presentation.components.OrderedList
-import com.example.heroapp.ui.theme.LARGE_PADDING
-import com.example.heroapp.ui.theme.SMALL_PADDING
-import com.example.heroapp.ui.theme.titleColor
+import com.example.heroapp.ui.theme.*
 import com.example.heroapp.util.Constants.BASE_URL
 import com.example.heroapp.R as R
 
@@ -59,18 +63,37 @@ fun DetailsScreenContent(
         bottomSheetState = rememberStandardBottomSheetState(initialValue = SheetValue.Expanded)
     )
 
+    var progress by mutableStateOf(0.0f)
+    // Get the bottom sheet progress
+    LaunchedEffect(key1 = progress) {
+        progress = scaffoldState.bottomSheetState.requireOffset()
+    }
+
+    val currentSheetFraction = getCurrentSheetFraction(scaffoldState, progress)
+
+    val radiusAnim by animateDpAsState(targetValue = if (currentSheetFraction == 1f) EXTRA_LARGE_PADDING else ZERO_DP_RADIUS)
+
+    Log.d("Fraction NEW_Progress", "${currentSheetFraction.toString()}")
+
     BottomSheetScaffold(
         //dimensione in minima estensione (Collapsed)
         sheetPeekHeight = 150.dp,
         scaffoldState = scaffoldState,
         sheetContent = {
-            hero?.let { BottomSheetContent(selectedHero = it) }
+            hero?.let {
+
+                BottomSheetContent(selectedHero = it) }
         },
+        sheetShape = RoundedCornerShape(
+            topStart = radiusAnim,
+            topEnd = radiusAnim
+        ),
         content = {
             hero?.image?.let { hero ->
+
                 BackgroundContent(
                     heroImage = hero,
- //                   imageFraction = ,
+                    imageFraction = currentSheetFraction,
                     onCloseAction = { navController.popBackStack() }
 
                 )
@@ -177,6 +200,7 @@ fun BottomSheetContent(
     }
 }
 
+@SuppressLint("Range")
 @Composable
 fun BackgroundContent(
     heroImage: String,
@@ -192,15 +216,20 @@ fun BackgroundContent(
             model = imageUrl,
             contentDescription = "Hero_Image",
             contentScale = ContentScale.Crop,
-            onLoading = { CircularProgressIndicator(
+          /*  onLoading = { CircularProgressIndicator(
                 color = Color.Blue,
                 strokeWidth = 6.dp
-            ) },
-            modifier = Modifier.fillMaxWidth().fillMaxHeight(fraction = imageFraction).align(Alignment.TopStart)
+            ) },*/
+            modifier = Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(fraction = imageFraction + 0.4f)
+                .align(Alignment.TopStart)
         )
         IconButton(
             onClick = { onCloseAction },
-            modifier = Modifier.fillMaxWidth().padding(SMALL_PADDING)
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(SMALL_PADDING)
         ){
             Icon(
                 imageVector = Icons.Default.Close,
@@ -212,6 +241,28 @@ fun BackgroundContent(
 
         }
     }
+}
+
+//TODO
+@OptIn(ExperimentalMaterial3Api::class)
+fun getCurrentSheetFraction(scaffoldState: BottomSheetScaffoldState, progress: Float): Float
+{
+    val targetValue = scaffoldState.bottomSheetState.targetValue
+    val currentValue = scaffoldState.bottomSheetState.currentValue
+
+    Log.d("Fraction Progress", "${progress.toString()}")
+    Log.d("Fraction targetValue", "$targetValue")
+    Log.d("Fraction currentValue", "$currentValue")
+
+    return when {
+        currentValue == SheetValue.Hidden && targetValue == SheetValue.Hidden -> 1f
+        //currentValue == SheetValue.PartiallyExpanded && targetValue == SheetValue.PartiallyExpanded -> 1f
+        currentValue == SheetValue.Expanded && targetValue == SheetValue.Expanded -> 0f
+        currentValue == SheetValue.Hidden && targetValue == SheetValue.Expanded -> 1f - progress
+        currentValue == SheetValue.Expanded && targetValue == SheetValue.Hidden -> 0f + progress
+        else -> progress
+    }
+
 }
 
 @Composable
