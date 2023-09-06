@@ -78,7 +78,7 @@ fun DetailsScreenContent(
     BottomSheetScaffold(
         //dimensione in minima estensione (Collapsed)
         sheetPeekHeight = 150.dp,
-        scaffoldState = scaffoldState,
+     //   scaffoldState = scaffoldState,
         sheetContent = {
             hero?.let {
 
